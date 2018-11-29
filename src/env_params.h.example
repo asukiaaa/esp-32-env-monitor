@@ -1,0 +1,6 @@
+#define TEMPERATURE_FIELD_NUM 1
+#define HUMIDITY_FIELD_NUM 2
+
+const String THINGSPEAK_API_KEY = "write-key-of-your-channeo-on-thingspeak";
+const char* ssid = "wifi-ssid";
+const char* password = "wifi-password";
