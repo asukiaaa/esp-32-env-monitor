@@ -5,7 +5,6 @@
 #include <WiFi.h>
 #include "env_params.h"
 
-#define LED 5
 #define WIFI_RETRY_MAX_COUNT 10
 #define SENSOR_SCAN_MAX_COUNT 10
 
@@ -15,7 +14,7 @@ AM2320 am2320;
 int count = 0;
 
 void setLed(boolean power) {
-  digitalWrite(LED, power);
+  digitalWrite(LED_PIN, power);
 }
 
 void goToSleep() {
@@ -25,7 +24,7 @@ void goToSleep() {
 }
 
 void setup() {
-  pinMode(OUTPUT, LED);
+  pinMode(OUTPUT, LED_PIN);
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
