@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <AM2320_asukiaaa.h>
-#include <esp_deep_sleep.h>
+#include <esp_sleep.h>
 #include <HTTPClient.h>
 #include <WiFi.h>
 #include "env_params.h"
@@ -25,7 +25,7 @@ void setLed(boolean power) {
 
 void goToSleep() {
   setLed(false);
-  esp_deep_sleep_enable_timer_wakeup(sleepSeconds * 1000 * 1000);
+  esp_sleep_enable_timer_wakeup(sleepSeconds * 1000 * 1000);
   esp_deep_sleep_start();
 }
 
@@ -36,10 +36,10 @@ void setup() {
   WiFi.disconnect();
   delay(100);
 
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_OFF);
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_OFF);
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_FAST_MEM, ESP_PD_OPTION_OFF);
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_MAX, ESP_PD_OPTION_OFF);
+  esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_OFF);
+  esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_OFF);
+  esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_FAST_MEM, ESP_PD_OPTION_OFF);
+  esp_sleep_pd_config(ESP_PD_DOMAIN_MAX, ESP_PD_OPTION_OFF);
 
   WiFi.begin(ssid, password);
   count = 0;
