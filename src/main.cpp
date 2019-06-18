@@ -66,6 +66,13 @@ void loop() {
   if (am2320.update() != 0) {
     Serial.println("Error: Cannot update sensor values.");
   } else {
+#ifdef WITH_LCD
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print(String(am2320.temperatureC) + "C");
+      lcd.setCursor(0,1);
+      lcd.print(String(am2320.humidity) + "%");
+#endif
     Serial.println("temperatureC: " + String(am2320.temperatureC) + " C");
     Serial.println("temperatureF: " + String(am2320.temperatureF) + " F");
     Serial.println("humidity: " + String(am2320.humidity) + " %");
@@ -76,13 +83,6 @@ void loop() {
                "&field" + String(HUMIDITY_FIELD_NUM) + "=" + String(am2320.humidity));
     int httpCode = http.GET();
     if (httpCode > 0) {
-#ifdef WITH_LCD
-      lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print(String(am2320.temperatureC) + "C");
-      lcd.setCursor(0,1);
-      lcd.print(String(am2320.humidity) + "%");
-#endif
       Serial.println("sended sensor values");
       goToSleep();
     } else {
