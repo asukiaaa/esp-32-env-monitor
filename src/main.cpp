@@ -5,6 +5,12 @@
 #include <WiFi.h>
 #include "env_params.h"
 
+#ifdef WITH_LCD
+#include <ST7032_asukiaaa.h>
+
+ST7032_asukiaaa lcd;
+#endif
+
 #define WIFI_RETRY_MAX_COUNT 10
 #define SENSOR_SCAN_MAX_COUNT 10
 
@@ -48,6 +54,11 @@ void setup() {
   Wire.begin();
   am2320.setWire(&Wire);
   count = 0;
+#ifdef WITH_LCD
+  lcd.setWire(&Wire);
+  lcd.begin(8,2);
+  lcd.setContrast(30);
+#endif
 }
 
 void loop() {
@@ -65,6 +76,13 @@ void loop() {
                "&field" + String(HUMIDITY_FIELD_NUM) + "=" + String(am2320.humidity));
     int httpCode = http.GET();
     if (httpCode > 0) {
+#ifdef WITH_LCD
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print(String(am2320.temperatureC) + "C");
+      lcd.setCursor(0,1);
+      lcd.print(String(am2320.humidity) + "%");
+#endif
       Serial.println("sended sensor values");
       goToSleep();
     } else {
