@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <AM2320_asukiaaa.h>
+#include <ThingSpeakWriter_asukiaaa.h>
 #include <esp_sleep.h>
-#include <HTTPClient.h>
 #include <WiFi.h>
 #include "env_params.h"
 
@@ -16,7 +16,8 @@ ST7032_asukiaaa lcd;
 
 const int sleepSeconds = 10 * 60;
 
-AM2320 am2320;
+ThingSpeakWriter_asukiaaa channelWriter(THINGSPEAK_WRITE_API_KEY);
+AM2320_asukiaaa am2320;
 int count = 0;
 
 void setLed(boolean power) {
@@ -77,13 +78,11 @@ void loop() {
     Serial.println("temperatureF: " + String(am2320.temperatureF) + " F");
     Serial.println("humidity: " + String(am2320.humidity) + " %");
 
-    HTTPClient http;
-    http.begin("https://api.thingspeak.com/update?api_key=" + THINGSPEAK_API_KEY +
-               "&field" + String(TEMPERATURE_FIELD_NUM) + "=" + String(am2320.temperatureC) +
-               "&field" + String(HUMIDITY_FIELD_NUM) + "=" + String(am2320.humidity));
-    int httpCode = http.GET();
+    channelWriter.setField(TEMPERATURE_FIELD_NUM, String(am2320.temperatureC));
+    channelWriter.setField(HUMIDITY_FIELD_NUM, String(am2320.humidity));
+    int httpCode = channelWriter.writeFields();
     if (httpCode > 0) {
-      Serial.println("sended sensor values");
+      Serial.println("sended sensor values code: " + String(httpCode));
       goToSleep();
     } else {
       Serial.println("failed to send sensor values");

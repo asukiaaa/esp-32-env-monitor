@@ -3,6 +3,6 @@
 #define HUMIDITY_FIELD_NUM 2
 // #define WITH_LCD
 
-const String THINGSPEAK_API_KEY = "write-key-of-your-channeo-on-thingspeak";
+const char* THINGSPEAK_WRITE_API_KEY = "write-key-of-your-channeo-on-thingspeak";
 const char* ssid = "wifi-ssid";
 const char* password = "wifi-password";
