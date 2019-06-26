@@ -14,6 +14,10 @@ ST7032_asukiaaa lcd;
 #define WIFI_RETRY_MAX_COUNT 10
 #define SENSOR_SCAN_MAX_COUNT 10
 
+#ifdef USE_WIRE1
+AM2320_asukiaaa am2320_1;
+#endif
+
 const int sleepSeconds = 10 * 60;
 
 ThingSpeakWriter_asukiaaa channelWriter(THINGSPEAK_WRITE_API_KEY);
@@ -60,6 +64,10 @@ void setup() {
   lcd.begin(8,2);
   lcd.setContrast(30);
 #endif
+#ifdef USE_WIRE1
+  Wire1.begin(WIRE1_SDA, WIRE1_SCL);
+  am2320_1.setWire(&Wire1);
+#endif
 }
 
 void loop() {
@@ -80,6 +88,17 @@ void loop() {
 
     channelWriter.setField(TEMPERATURE_FIELD_NUM, String(am2320.temperatureC));
     channelWriter.setField(HUMIDITY_FIELD_NUM, String(am2320.humidity));
+#ifdef USE_WIRE1
+    if (am2320_1.update() == 0) {
+    Serial.println("temperature1C: " + String(am2320_1.temperatureC) + " C");
+    Serial.println("temperature1F: " + String(am2320_1.temperatureF) + " F");
+    Serial.println("humidity1: " + String(am2320_1.humidity) + " %");
+      channelWriter.setField(TEMPERATURE1_FIELD_NUM, String(am2320_1.temperatureC));
+      channelWriter.setField(HUMIDITY1_FIELD_NUM, String(am2320_1.humidity));
+    } else {
+      Serial.println("cannot update sensor for Wire1");
+    }
+#endif
     int httpCode = channelWriter.writeFields();
     if (httpCode > 0) {
       Serial.println("sended sensor values code: " + String(httpCode));
