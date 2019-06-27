@@ -1,4 +1,4 @@
-# esp32-env-monitor
+# esp32_env_monitor/multi_functions
 
 A project to record temperature and humidity with using esp32 and a sensor.
 
