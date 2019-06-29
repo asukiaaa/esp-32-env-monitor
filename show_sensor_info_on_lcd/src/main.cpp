@@ -22,7 +22,7 @@ void loop() {
     lcd.setCursor(0, 0);
     lcd.print(sensor.temperatureC);
     lcd.print("C");
-    lcd.setCursor(1, 0);
+    lcd.setCursor(0, 1);
     lcd.print(sensor.humidity);
     lcd.print("%");
   }
