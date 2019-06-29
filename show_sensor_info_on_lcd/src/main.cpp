@@ -2,8 +2,8 @@
 #include <AM2320_asukiaaa.h>
 #include <ST7032_asukiaaa.h>
 
-ST7032_asukiaaa lcd;
 AM2320_asukiaaa sensor;
+ST7032_asukiaaa lcd;
 
 void setup() {
   lcd.begin(8, 2);
